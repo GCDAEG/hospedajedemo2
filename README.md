@@ -1,8 +1,8 @@
 # ⚖️ Estudio Jurídico - Demo Next.js
 
-Esta es una **demo** de una plantilla profesional para estudios jurídicos, desarrollada con **Next.js** y Tailwind CSS.
+Esta es una **demo** de una plantilla profesional para hospedajes, desarrollada con **Next.js** y Tailwind CSS.
 
-El objetivo de este proyecto es mostrar cómo se ve y funciona una web moderna para abogados, lista para ser adaptada y desplegada en cualquier hosting (Vercel, Netlify, Hostinger, etc.).
+El objetivo de este proyecto es mostrar cómo se ve y funciona una web moderna para hospedajes, lista para ser adaptada y desplegada en cualquier hosting (Vercel, Netlify, Hostinger, etc.).
 
 ## Tecnologías utilizadas
 
@@ -15,12 +15,3 @@ El objetivo de este proyecto es mostrar cómo se ve y funciona una web moderna p
 ## Vista previa
 
 ![Estudio Jurídico Preview](public/preview.jpeg)
-
-## 🚀 Cómo usar esta demo
-
-1. Clona el repositorio:
-
-```bash
-git clone https://github.com/tu-usuario/nombre-del-repo.git
-cd nombre-del-repo
-```
