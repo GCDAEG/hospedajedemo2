@@ -60,54 +60,58 @@
 }
 
 :root {
-  /* Fondo principal: blanco luminoso y limpio */           /* Blanco casi puro con un toque muy sutil cálido */           /* Gris muy oscuro / casi negro para texto principal – excelente legibilidad */
+  /* Fondo principal: Un blanco "hueso" muy suave para evitar la fatiga visual */
+  --background: oklch(98% 0.005 200); 
+  --foreground: oklch(20% 0.020 250); /* Azul muy oscuro casi negro para texto */
 
-  --card: oklch(100.00% 0.000 0);                 /* Cards casi blancas, muy limpias */
-  --card-foreground: oklch(0.145 0 0);
+  /* Cards: Blancas puras para que resalten sobre el fondo */
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(20% 0.020 250);
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(20% 0.020 250);
 
-  /* Primary → Dorado elegante y premium (queda espectacular en light mode) */
-  --primary: oklch(47.08% 0.112 50.85);               /* Mismo dorado luminoso */
-  --primary-foreground: oklch(0.985 0 0);    /* Texto oscuro encima del dorado (máximo contraste) */
+  /* Primary → Azul Profundo (Río) - Elegante y sereno */
+  --primary: oklch(25% 0.040 250); 
+  --primary-foreground: oklch(98% 0.005 200);
 
-  /* Secondary / Muted / Accent – grises claros con matiz dorado sutil */
-  --secondary: oklch(49.55% 0.090 126.19);             /* Gris muy claro con toque dorado */
-  --secondary-foreground: oklch(0.985 0 0);
+  /* Secondary → Tono Arena/Piedra muy suave */
+  --secondary: oklch(94% 0.010 80); 
+  --secondary-foreground: oklch(25% 0.040 250);
 
-  --muted: oklch(0.97 0 0);                /* Muted muy claro */
-  --muted-foreground: oklch(0.556 0 0);    /* Texto muted más oscuro para legibilidad */
+  /* Muted → Grises azulados suaves */
+  --muted: oklch(92% 0.010 230);
+  --muted-foreground: oklch(50% 0.020 230);
 
-  --accent: oklch(75.00% 0.086 65.30);                /* Variante más clara del dorado para hovers y acentos */
-  --accent-foreground: oklch(0.205 0 0);
+  /* Accent → Verde Agua / Teal (Conexión con la naturaleza) */
+  --accent: oklch(65% 0.120 190); 
+  --accent-foreground: oklch(100% 0 0);
 
-  --destructive: oklch(0.577 0.245 27.325);           /* Rojo más vivo pero no chillón en light mode */
-  --destructive-foreground: oklch(0.98 0.005 80);
+  --destructive: oklch(55% 0.180 25);
+  --destructive-foreground: oklch(98% 0 0);
 
-  --border: oklch(0.922 0 0);        /* Bordes gris oscuro sutil */
-  --input: oklch(0.922 0 0);          /* Inputs claros con borde visible */
-  --ring: oklch(0.708 0 0);            /* Ring dorado con transparencia */
+  /* Bordes y UI */
+  --border: oklch(90% 0.010 230);
+  --input: oklch(90% 0.010 230);
+  --ring: oklch(65% 0.120 190);
 
+  /* Altura Nav */
+  --navbar-height: 72px;
 
-  /* altura nav */
-  --navbar-height:64px;
-
-  /* font sources */
+  /* Font Sources */
   --font-sans: var(--font-roboto), system-ui, sans-serif;
   --font-serif: var(--font-lora);
   --font-title: var(--font-inter), var(--font-sans);
-  /* tema de figma */
-  --background: oklch(95.71% 0.011 76.60);
-  --foreground: oklch(0.145 0 0);
-  --neutral-dark:oklch(28.42% 0.008 59.35);
-  --neutral-light:oklch(95.71% 0.011 76.60);
-  --text-primary:oklch(21.78% 0.000 0);
-  --text-secondary:oklch(52.78% 0.000 0);
-  --radius: 0.625rem;
+
+  /* Variables adicionales para el diseño */
+  --neutral-dark: oklch(30% 0.020 250);
+  --neutral-light: oklch(96% 0.005 200);
+  --text-primary: oklch(20% 0.020 250);
+  --text-secondary: oklch(45% 0.020 230);
+  --radius: 1rem; /* Bordes más redondeados para un look más orgánico */
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
@@ -115,39 +119,38 @@ html{
   transition: height 300ms ease, box-shadow 300ms ease;
 }
 
-section {
-  scroll-margin-top: var(--navbar-height);
-}
 
-/* FONTS */
-.font-title {
+/* TIPOGRAFÍA UNIFICADA */
+
+h1 {
   font-family: var(--font-title);
+  @apply text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1] text-balance;
 }
 
-.font-serif {
-  font-family: var(--font-serif);
+h2 {
+  font-family: var(--font-title);
+  @apply text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary text-balance;
 }
 
-.font-base {
+h3 {
+  font-family: var(--font-title);
+  @apply text-2xl md:text-3xl font-semibold leading-tight text-foreground;
+}
+
+p {
   font-family: var(--font-sans);
+  @apply text-base md:text-lg leading-relaxed;
 }
 
-h1{
-  font-family: var(--font-inter);
-  @apply text-secondary-foreground text-4xl lg:text-6xl 2xl:text-7xl w-full text-center font-bold text-balance
-}
-h2{
-  font-family: var(--font-inter);
-  @apply text-4xl md:text-4xl lg:text-5xl font-semibold text-balance
-}
-h3{
-  font-family:var(--font-inter);
-  @apply text-[28px] md:text-[32px] leading-7 md:leading-8 font-semibold text-foreground;
-}
-span{
+span {
   font-family: var(--font-sans);
-  @apply text-balance
+  @apply text-balance;
 }
+
+/* Utilitarios de fuentes */
+.font-title { font-family: var(--font-title); }
+.font-serif { font-family: var(--font-serif); }
+.font-base { font-family: var(--font-sans); }
 
 .dark {
   --background: oklch(0.145 0 0);

@@ -4,9 +4,6 @@ import { Section } from "@/components/layout/Section";
 import { StaggerContainer } from "../../motion/StraggerContainer";
 import { FadeIn } from "../../motion/FadeIn";
 import Image from "next/image";
-import { Quote } from "lucide-react";
-
-// Import del Carousel de shadcn
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { PiQuotesFill } from "react-icons/pi";
+import { Quote } from "lucide-react"; // Cambiado por Lucide para consistencia
 import { Separator } from "@/components/ui/separator";
 
 type Testimonial = {
@@ -31,7 +28,7 @@ const testimonials: Testimonial[] = [
     comment:
       "La cabaña superó todas nuestras expectativas. El lugar es mágico, la atención impecable y las vistas al río son increíbles. Volveremos sin duda.",
     name: "María López",
-    username: "@marialopez",
+    username: "Huésped verificado",
     avatar: "https://i.pravatar.cc/150?u=maria",
   },
   {
@@ -39,7 +36,7 @@ const testimonials: Testimonial[] = [
     comment:
       "Un paraíso escondido. La piscina, el jardín y la tranquilidad que se respira hacen que sea el lugar ideal para desconectar. Todo perfecto.",
     name: "Carlos Rodríguez",
-    username: "@carlosr",
+    username: "Huésped verificado",
     avatar: "https://i.pravatar.cc/150?u=carlos",
   },
   {
@@ -47,33 +44,29 @@ const testimonials: Testimonial[] = [
     comment:
       "Nos sentimos como en casa. La cabaña es hermosa, muy limpia y con todos los detalles. El desayuno casero estaba delicioso. Recomendado 100%.",
     name: "Laura Fernández",
-    username: "@laurafer",
+    username: "Huésped verificado",
     avatar: "https://i.pravatar.cc/150?u=laura",
-  },
-  {
-    id: 4,
-    comment:
-      "El mejor fin de semana en familia que hemos tenido. Los niños disfrutaron muchísimo del jardín y la piscina. El lugar transmite mucha paz.",
-    name: "Diego Morales",
-    username: "@diegomorales",
-    avatar: "https://i.pravatar.cc/150?u=diego",
   },
 ];
 
 const Testimonials = () => {
   return (
-    <Section id="testimonials" height="content" className="py-16 md:py-24">
-      <div className="mx-auto max-w-7xl flex flex-col gap-6">
+    <Section id="testimonials" height="content" className="bg-secondary/30">
+      <div className="mx-auto max-w-7xl flex flex-col gap-12">
         {/* Título y descripción */}
-        <div className="text-center ">
+        <div className="text-center flex flex-col gap-4">
           <FadeIn>
-            <h2 className="text-4xl md:text-[36px] font-bold tracking-tight">
-              Reseñas de nuestros huéspedes
+            <span className="text-accent font-semibold tracking-widest uppercase text-sm">
+              Experiencias Reales
+            </span>
+            <h2 className="text-primary mt-2">
+              Lo que dicen nuestros huéspedes
             </h2>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <p className="mt-4 text-base md:text-[16px] text-foreground/70 max-w-2xl mx-auto">
-              Lo que realmente piensan quienes ya se quedaron con nosotros.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              La mayor satisfacción es saber que quienes nos visitan encuentran
+              la paz que venían a buscar.
             </p>
           </FadeIn>
         </div>
@@ -87,46 +80,45 @@ const Testimonials = () => {
             }}
             className="w-full"
           >
-            <CarouselContent>
+            <CarouselContent className="-ml-4">
               {testimonials.map((testimonial, index) => (
                 <CarouselItem
                   key={testimonial.id}
-                  className="basis-full md:basis-1/2"
+                  className="pl-4 basis-full md:basis-1/2 lg:basis-1/3"
                 >
-                  <FadeIn delay={index * 0.1}>
-                    <div className="bg-card px-4 py-5 rounded-3xl h-full flex flex-col shadow-sm hover:shadow-md gap-6">
-                      {/* Comillas */}
-                      <PiQuotesFill className="size-10 text-text-primary" />
+                  <FadeIn delay={index * 0.1} className="h-full">
+                    <div className="bg-card p-8 rounded-[--radius] h-full flex flex-col border border-border/50 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group">
+                      {/* Icono de comillas decorativo */}
+                      <div className="mb-6">
+                        <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+                          <Quote className="size-6 fill-current" />
+                        </div>
+                      </div>
 
                       {/* Comentario */}
-                      <p className="text-lg leading-relaxed text-foreground/90 grow">
-                        {testimonial.comment}
+                      <p className="text-lg italic leading-relaxed text-foreground/80 grow mb-8">
+                        `&quot;`{testimonial.comment}`&quot;`
                       </p>
 
-                      {/* Separator */}
-                      <Separator className="bg-muted" />
+                      <Separator className="mb-6 opacity-50" />
 
                       {/* Usuario */}
                       <div className="flex items-center gap-4">
-                        <div className="relative w-12 h-12 shrink-0">
-                          {/* <Image
+                        <div className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden border-2 border-accent/20">
+                          <Image
                             src={testimonial.avatar}
                             alt={testimonial.name}
                             fill
-                            className="rounded-full object-cover border border-border"
-                            sizes="48px"
-                          /> */}
-                          <div className="bg-green-500 size-12 rounded-full"></div>
+                            className="object-cover"
+                          />
                         </div>
-                        <div>
-                          <p className="font-semibold text-foreground">
+                        <div className="flex flex-col">
+                          <span className="font-bold text-primary text-base">
                             {testimonial.name}
-                          </p>
-                          {testimonial.username && (
-                            <p className="text-sm text-foreground/60">
-                              {testimonial.username}
-                            </p>
-                          )}
+                          </span>
+                          <span className="text-xs text-accent font-medium uppercase tracking-wider">
+                            {testimonial.username}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -135,9 +127,11 @@ const Testimonials = () => {
               ))}
             </CarouselContent>
 
-            {/* Botones de navegación */}
-            <CarouselPrevious className="hidden md:flex -left-4" />
-            <CarouselNext className="hidden md:flex -right-4" />
+            {/* Navegación estilizada */}
+            <div className="flex justify-center md:justify-end gap-4 mt-8">
+              <CarouselPrevious className="static translate-y-0 border-primary/20 hover:bg-primary hover:text-white" />
+              <CarouselNext className="static translate-y-0 border-primary/20 hover:bg-primary hover:text-white" />
+            </div>
           </Carousel>
         </StaggerContainer>
       </div>

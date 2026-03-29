@@ -1,23 +1,12 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { FaBars } from "react-icons/fa";
 import { NavSection } from "@/lib/sections";
 import Link from "next/link";
-import { Gavel, Waves } from "lucide-react";
+import { Waves, X, Menu } from "lucide-react";
 import { useLenis } from "lenis/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { HiBars2, HiBars3 } from "react-icons/hi2";
-import { motion } from "framer-motion";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface MobileMenuProps {
   sections: NavSection[];
@@ -27,80 +16,127 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ sections, activeSection }) => {
   const [open, setOpen] = useState(false);
   const lenis = useLenis();
-  const collapsible = useRef<HTMLDivElement | null>(null);
 
-  const handleScroll = (id: string) => {
-    lenis?.scrollTo(`#${id}`, { offset: -64, duration: 1.2 });
-    setOpen(false);
-  };
-
-  // 👉 CLOSE ON OUTSIDE CLICK
+  // Bloquear el scroll del body cuando el menú está abierto
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        collapsible.current &&
-        !collapsible.current.contains(e.target as Node)
-      ) {
-        setOpen(false);
-      }
-    };
-
     if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [open]);
 
+  const handleScroll = (id: string) => {
+    setOpen(false);
+    // Pequeño delay para que la animación de cierre comience antes del scroll
+    setTimeout(() => {
+      lenis?.scrollTo(`#${id}`, { offset: -72, duration: 1.5 });
+    }, 300);
+  };
+
   return (
-    <div
-      className="w-full h-16 md:px-6 lg:px-28 flex items-center justify-between md:hidden text-primary border-b bg-card"
-      ref={collapsible}
-    >
-      <div className="flex w-full h-full justify-between px-4 items-center relative z-50 bg-card">
+    <div className="w-full h-(--navbar-height) flex items-center justify-between lg:hidden bg-background/80 backdrop-blur-md sticky top-0 z-100">
+      {/* Barra Superior */}
+      <div className="flex w-full justify-between px-4 items-center h-full  ">
         <Link
           href="/"
-          className="font-bold text-lg flex items-center gap-2 text-foreground"
+          className="font-bold flex items-center gap-2 text-primary"
+          onClick={() => setOpen(false)}
         >
-          <div className=" flex">
-            <Waves className={`size-6 `} strokeWidth={2} />
-          </div>
-          <p className="text-2xl ">AGUAYRIO</p>
+          <Waves className="size-6 text-accent" strokeWidth={2.5} />
+          <span className="text-xl tracking-tighter font-bold">AGUAYRIO</span>
         </Link>
 
-        <Button variant="ghost" onClick={() => setOpen((prev) => !prev)}>
-          <HiBars3 className="size-8" />
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setOpen(!open)}
+          className="relative z-110 text-primary hover:bg-transparent"
+        >
+          <AnimatePresence mode="wait">
+            {open ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+              >
+                <X className="size-8" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="menu"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+              >
+                <Menu className="size-8" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Button>
       </div>
 
-      <AnimatePresence initial={false}>
+      {/* Overlay del Menú */}
+      <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ y: { duration: 0.1, ease: "easeInOut" } }}
-            className="absolute top-full w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-primary/95 backdrop-blur-xl z-105 flex flex-col justify-center px-8"
           >
-            <ul className="flex flex-col px-4 py-6 gap-2 bg-primary text-primary-foreground w-full z-40 border-b border-border shadow-md">
-              {sections.map((sec) => (
-                <li key={sec.id}>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "w-full justify-start text-base h-14 text-left font-semibold",
-                      activeSection === sec.id &&
-                        "bg-accent text-accent-foreground",
-                    )}
-                    onClick={() => handleScroll(sec.id)}
+            {/* Decoración de fondo */}
+            <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-accent/20 rounded-full blur-3xl" />
+
+            <nav className="relative z-10">
+              <ul className="flex flex-col gap-6">
+                {sections.map((sec, i) => (
+                  <motion.li
+                    key={sec.id}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.1 }}
                   >
-                    {sec.label}
-                  </Button>
-                </li>
-              ))}
-            </ul>
+                    <button
+                      onClick={() => handleScroll(sec.id)}
+                      className={cn(
+                        "text-4xl font-bold tracking-tighter transition-all flex items-center gap-4",
+                        activeSection === sec.id
+                          ? "text-accent translate-x-4"
+                          : "text-white/60 hover:text-white",
+                      )}
+                    >
+                      {activeSection === sec.id && (
+                        <motion.div
+                          layoutId="activeDot"
+                          className="w-2 h-2 rounded-full bg-accent"
+                        />
+                      )}
+                      {sec.label}
+                    </button>
+                  </motion.li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Footer del Menú */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-20 pt-8 border-t border-white/10"
+            >
+              <p className="text-white/40 text-sm tracking-widest uppercase mb-4">
+                Reservas
+              </p>
+              <a
+                href="https://wa.me/..."
+                className="text-white text-xl font-medium hover:text-accent transition-colors"
+              >
+                +54 9 11 1234 5678
+              </a>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

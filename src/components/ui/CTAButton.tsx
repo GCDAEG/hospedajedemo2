@@ -1,117 +1,88 @@
-// components/cta/CTAButton.tsx
 "use client";
 
 import React from "react";
 import { motion } from "framer-motion";
-import { BsWhatsapp } from "react-icons/bs";
+import { MessageCircle } from "lucide-react"; // Usamos lucide para consistencia
 
-// Props comunes para ambas variantes
 interface CTAButtonBaseProps {
   ctaRef?: React.RefObject<HTMLDivElement | null>;
   className?: string;
   buttonClassName?: string;
-  href?: string; // por si quieres cambiar el link en algún caso
+  href?: string;
 }
 
-// Variante 1: Hero (con título grande)
+// 1. Variante Hero: Botón con mayor jerarquía y presencia
 export function HeroCTAButton({
   ctaRef,
   className = "",
   buttonClassName = "",
-  href = "https://wa.me/549...?", // ← completa con tu número real
-}: CTAButtonBaseProps & { href?: string }) {
+  href = "https://wa.me/549...?",
+}: CTAButtonBaseProps) {
   return (
-    <section
-      className={`flex flex-col items-center justify-center w-fit space-y-4 md:space-y- ${className}`}
-    >
-      {/* <div className="flex w-full justify-center">
-        <h2 className="text-4xl sm:text-2xl md:text-2xl font-bold text-accent text-center leading-tight">
-          Tu web lista hoy
-        </h2>
-      </div> */}
+    <div ref={ctaRef} className={`flex w-full justify-center ${className}`}>
+      <motion.a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`
+          group relative inline-flex items-center gap-3
+          bg-accent text-white
+          px-8 py-4 rounded-[--radius]
+          font-bold text-lg tracking-wide
+          shadow-lg shadow-accent/20
+          overflow-hidden
+          ${buttonClassName}
+        `}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{
+          scale: 1.03,
+          backgroundColor: "oklch(70% 0.120 190)", // Un tono más claro del verde agua
+        }}
+        whileTap={{ scale: 0.98 }}
+      >
+        {/* Efecto de brillo sutil al pasar el mouse */}
+        <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] transition-transform" />
 
-      <div ref={ctaRef} className="flex w-full justify-center">
-        <CtaButtonContent href={href} className={buttonClassName} />
-      </div>
-    </section>
+        <MessageCircle className="text-2xl animate-pulse" />
+        <span className="relative">RESERVAR AHORA</span>
+      </motion.a>
+    </div>
   );
 }
 
-// Variante 2: Botón simple (reutilizable en cualquier sección)
+// 2. Variante Simple: Para cards de habitaciones o servicios
 export function SimpleCTAButton({
-  ctaRef,
   className = "",
   buttonClassName = "",
-  href = "https://wa.me/549...?", // ← mismo por defecto
-}: CTAButtonBaseProps & { href?: string }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Contactar por WhatsApp"
-      className={`
-        group relative
-        inline-flex items-center gap-2.5
-        bg-primary text-neutral-light
-        px-5 py-2 rounded-md
-        font-semibold text-lg
-        shadow-sm hover:shadow-md
-        hover:bg-accent
-        justify-center
-        transition-shadow duration-300
-        focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
-        ${className}
-      `}
-    >
-      <BsWhatsapp className="text-xl md:text-2xl" />
-      Reservar por WhatsApp
-    </a>
-  );
-}
-
-// Componente interno reutilizable (el botón en sí)
-function CtaButtonContent({
-  href,
-  className = "",
-}: {
-  href: string;
-  className?: string;
-}) {
+  href = "https://wa.me/549...?",
+}: CTAButtonBaseProps) {
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Contactar por WhatsApp"
       className={`
-        group relative
-        inline-flex items-center gap-2.5 text-white
-        px-8 md:px-6 py-4 rounded-xl rounded-bl-none
-        font-semibold text-lg
-        shadow-sm hover:shadow-md
-        transition-shadow duration-300
-        focus:outline-none focus:ring-2 focus:ring-primary/60 focus:ring-offset-2
-        bg-linear-to-bl from-primary to-primary/80
-        ${className}
+        inline-flex items-center justify-center gap-2
+        bg-primary text-white
+        px-6 py-3 rounded-[--radius]
+        font-semibold text-sm md:text-base
+        transition-all duration-300
+        hover:bg-primary/90
+        w-full sm:w-auto
+        ${className} ${buttonClassName}
       `}
-      whileHover={{
-        y: -3,
-        boxShadow: "0 12px 28px -8px rgba(37, 211, 102, 0.28)",
-        transition: {
-          type: "spring",
-          stiffness: 300,
-          damping: 28,
-        },
-      }}
-      whileTap={{
-        y: 1,
-        boxShadow: "0 4px 12px -4px rgba(37, 211, 102, 0.2)",
-        transition: { duration: 0.14 },
-      }}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.97 }}
     >
-      <BsWhatsapp className="text-xl md:text-2xl" />
-      Consultar por WhatsApp
+      <MessageCircle size={18} />
+      Consultar Disponibilidad
     </motion.a>
   );
 }
+
+/* Nota: Para el efecto 'shimmer', asegúrate de tener este keyframe en tu tailand.config o globals.css:
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+*/
