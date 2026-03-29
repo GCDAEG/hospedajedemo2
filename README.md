@@ -1,4 +1,4 @@
-# ⚖️ Estudio Jurídico - Demo Next.js
+# Hospedajes - Demo Next.js
 
 Esta es una **demo** de una plantilla profesional para hospedajes, desarrollada con **Next.js** y Tailwind CSS.
 
