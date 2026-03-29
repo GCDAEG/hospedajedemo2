@@ -14,4 +14,4 @@ El objetivo de este proyecto es mostrar cómo se ve y funciona una web moderna p
 
 ## Vista previa
 
-![Estudio Jurídico Preview](public/preview.jpeg)
+![Hospedaje Preview](public/preview.jpeg)
